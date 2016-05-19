@@ -2,14 +2,19 @@ defmodule Bracco.User do
   use Bracco.Web, :model
 
   schema "users" do
-    field :login, :string
+    field :first_name, :string, size: 50
+    field :last_name, :string, size: 50
+    field :email, :string, size: 50
+    field :avatar_url, :string, size: 100
+    field :username, :string, size: 50
     field :password, :string, virtual: true
     field :password_hash, :string
+    belongs_to :profile, Bracco.Profile
 
     timestamps
   end
 
-  @required_fields ~w(login password_hash)
+  @required_fields ~w(first_name last_name username password)
   @optional_fields ~w()
 
   @doc """

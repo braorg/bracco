@@ -9,3 +9,51 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+Mix.Task.run "ecto.drop", ~w(-r Bracco.Repo --quiet)
+Mix.Task.run "ecto.create", ~w(-r Bracco.Repo --quiet)
+Mix.Task.run "ecto.migrate", ~w(-r Bracco.Repo --quiet)
+
+# %Profiles{}
+alias Bracco.Profile
+Bracco.Repo.insert!(%Profile{description: "Admin"})
+Bracco.Repo.insert!(%Profile{description: "Guest"})
+
+# %User{}
+alias Bracco.User
+user_name = Faker.Internet.user_name
+%User{
+  first_name: Faker.Name.first_name,
+  last_name: Faker.Name.last_name,
+  email: Faker.Internet.email,
+  avatar_url: Faker.Avatar.image_url,
+  username: user_name,
+  password_hash: Comeonin.Bcrypt.hashpwsalt(user_name),
+  profile: 1
+}
+
+Enum.each((1..10), fn(_) ->
+  user_name = Faker.Internet.user_name
+  Bracco.Repo.insert!(
+    %User{
+      first_name: Faker.Name.first_name,
+      last_name: Faker.Name.last_name,
+      email: Faker.Internet.email,
+      avatar_url: Faker.Avatar.image_url,
+      username: user_name,
+      password_hash: Comeonin.Bcrypt.hashpwsalt(user_name),
+      profile: 2
+    }
+  )
+end)
+
+# %Note{}
+alias Bracco.Note
+Enum.each((1..100), fn(_) ->
+  Bracco.Repo.insert!(
+    %Note{
+      title: Faker.Lorem.sentence(1..5),
+      description: Faker.Lorem.paragraph(1..10)
+    }
+  )
+end)

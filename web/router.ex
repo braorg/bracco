@@ -23,5 +23,6 @@ defmodule Bracco.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
+    resources "/notes", NoteController, except: [:new, :edit]
   end
 end
