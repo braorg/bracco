@@ -35,5 +35,6 @@ defmodule Bracco.Endpoint do
     key: "_bracco_key",
     signing_salt: "uz0jINAV"
 
+  plug Corsica, max_age: 600, origins: "*"
   plug Bracco.Router
 end
