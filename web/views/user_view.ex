@@ -11,7 +11,10 @@ defmodule Bracco.UserView do
 
   def render("user.json", %{user: user}) do
     %{id: user.id,
-      login: user.login,
-      password_hash: user.password_hash}
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      avatar_url: user.avatar_url,
+      username: user.username}
   end
 end
