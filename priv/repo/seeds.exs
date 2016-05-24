@@ -10,6 +10,8 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
+File.mkdir_p!("priv/static/avatars")
+
 Mix.Task.run "ecto.drop", ~w(-r Bracco.Repo --quiet)
 Mix.Task.run "ecto.create", ~w(-r Bracco.Repo --quiet)
 Mix.Task.run "ecto.migrate", ~w(-r Bracco.Repo --quiet)
@@ -22,6 +24,10 @@ Bracco.Repo.insert!(%Profile{description: "Guest"})
 # %User{}
 alias Bracco.User
 user_name = Faker.Internet.user_name
+image_url =
+  Faker.Avatar.image_url
+  |> Bracco.AvatarMgr.convert_to_local_path
+
 %User{
   first_name: Faker.Name.first_name,
   last_name: Faker.Name.last_name,
@@ -34,12 +40,16 @@ user_name = Faker.Internet.user_name
 
 Enum.each((1..10), fn(_) ->
   user_name = Faker.Internet.user_name
+  image_url =
+    Faker.Avatar.image_url
+    |> Bracco.AvatarMgr.convert_to_local_path
+
   Bracco.Repo.insert!(
     %User{
       first_name: Faker.Name.first_name,
       last_name: Faker.Name.last_name,
       email: Faker.Internet.email,
-      avatar_url: Faker.Avatar.image_url,
+      avatar_url: image_url,
       username: user_name,
       password_hash: Comeonin.Bcrypt.hashpwsalt(user_name),
       profile: 2

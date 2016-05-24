@@ -19,7 +19,7 @@ defmodule Bracco.Mixfile do
   def application do
     [mod: {Bracco, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :comeonin, :faker]]
+                    :phoenix_ecto, :postgrex, :comeonin, :faker, :httpoison]]
   end
 
   # Specifies which paths to compile per environment.
@@ -39,7 +39,8 @@ defmodule Bracco.Mixfile do
      {:cowboy, "~> 1.0"},
      {:faker, "~> 0.6.0", only: :dev},
      {:comeonin, "~> 2.4"},
-     {:corsica, "~> 0.4"}]
+     {:corsica, "~> 0.4"},
+     {:httpoison, "~> 0.8"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
