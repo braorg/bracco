@@ -10,6 +10,10 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
+require Integer
+
+File.mkdir_p!("priv/static/avatars")
+
 Mix.Task.run "ecto.drop", ~w(-r Bracco.Repo --quiet)
 Mix.Task.run "ecto.create", ~w(-r Bracco.Repo --quiet)
 Mix.Task.run "ecto.migrate", ~w(-r Bracco.Repo --quiet)
@@ -22,15 +26,22 @@ Bracco.Repo.insert!(%Profile{description: "Guest"})
 # %User{}
 alias Bracco.User
 user_name = Faker.Internet.user_name
-%User{
-  first_name: Faker.Name.first_name,
-  last_name: Faker.Name.last_name,
-  email: Faker.Internet.email,
-  avatar_url: Faker.Avatar.image_url,
-  username: user_name,
-  password_hash: Comeonin.Bcrypt.hashpwsalt(user_name),
-  profile: 1
-}
+image_url =
+  Faker.Avatar.image_url
+  |> Bracco.AvatarMgr.convert_to_local_path
+
+Bracco.Repo.insert!(
+  %User{
+    first_name: Faker.Name.first_name,
+    last_name: Faker.Name.last_name,
+    email: Faker.Internet.email,
+    avatar_url: image_url,
+    archived: false,
+    username: user_name,
+    password_hash: Comeonin.Bcrypt.hashpwsalt(user_name),
+    profile_id: 1
+  }
+)
 
 Enum.each((1..10), fn(_) ->
   user_name = Faker.Internet.user_name
@@ -39,10 +50,11 @@ Enum.each((1..10), fn(_) ->
       first_name: Faker.Name.first_name,
       last_name: Faker.Name.last_name,
       email: Faker.Internet.email,
-      avatar_url: Faker.Avatar.image_url,
+      avatar_url: image_url,
+      archived: Integer.is_even(:random.uniform(5)),
       username: user_name,
       password_hash: Comeonin.Bcrypt.hashpwsalt(user_name),
-      profile: 2
+      profile_id: 2
     }
   )
 end)
@@ -53,7 +65,8 @@ Enum.each((1..100), fn(_) ->
   Bracco.Repo.insert!(
     %Note{
       title: Faker.Lorem.sentence(1..5),
-      description: Faker.Lorem.paragraph(1..10)
+      description: Faker.Lorem.paragraph(1..10),
+      user_id: :random.uniform(10)
     }
   )
 end)
