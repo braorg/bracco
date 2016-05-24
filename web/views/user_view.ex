@@ -15,8 +15,6 @@ defmodule Bracco.UserView do
       last_name: user.last_name,
       email: user.email,
       avatar_url: user.avatar_url,
-      username: user.username,
-      archived: user.archived,
-      profile: user.profile}
+      username: user.username}
   end
 end

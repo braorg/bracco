@@ -9,7 +9,6 @@ defmodule Bracco.User do
     field :username, :string, size: 50
     field :password, :string, virtual: true
     field :password_hash, :string
-    field :archived, :boolean, default: false
     belongs_to :profile, Bracco.Profile
 
     timestamps

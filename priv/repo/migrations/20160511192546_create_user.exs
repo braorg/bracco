@@ -9,7 +9,6 @@ defmodule Bracco.Repo.Migrations.CreateUser do
       add :avatar_url, :string, size: 100
       add :username, :string, size: 50
       add :password_hash, :string
-      add :archived, :boolean, default: false
       add :profile_id, references(:profiles)
 
       timestamps
