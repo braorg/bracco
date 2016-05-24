@@ -17,6 +17,6 @@ defmodule Bracco.UserView do
       avatar_url: user.avatar_url,
       username: user.username,
       archived: user.archived,
-      profile: user.profile}
+      profile_id: user.profile_id}
   end
 end

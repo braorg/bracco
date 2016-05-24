@@ -1,12 +1,22 @@
 defmodule Bracco.UserController do
   use Bracco.Web, :controller
+  import Ecto.Query
 
   alias Bracco.User
 
   plug :scrub_params, "user" when action in [:create, :update]
 
-  def index(conn, _params) do
-    users = Repo.all(User)
+  def index(conn, params) do
+    base_query = from u in User, select: u
+
+    query = case params do
+      %{"archived" => archived} ->
+        where(base_query, [u], u.archived == ^archived)
+      _ ->
+        base_query
+    end
+
+    users = Repo.all(query)
     render(conn, "index.json", users: users)
   end
 
