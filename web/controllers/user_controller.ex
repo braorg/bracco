@@ -37,8 +37,15 @@ defmodule Bracco.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = Repo.get!(User, id)
-    render(conn, "show.json", user: user)
+    try do
+      user = Repo.get!(User, id)
+      render(conn, "show.json", user: user)
+    rescue
+      Ecto.NoResultsError ->
+        conn
+        |> put_status(404)
+        |> render(Bracco.ChangesetView, "error.json", message: "Record not found")
+    end
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
