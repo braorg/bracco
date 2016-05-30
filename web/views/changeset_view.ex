@@ -18,6 +18,6 @@ defmodule Bracco.ChangesetView do
   end
 
   def render("error.json", %{message: message}) do
-    %{error: message}
+    %{errors: message}
   end
 end

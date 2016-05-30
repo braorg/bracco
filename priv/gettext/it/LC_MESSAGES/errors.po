@@ -91,3 +91,8 @@ msgid "must be equal to %{count}"
 msgid_plural "must be equal to %{count}"
 msgstr[0] "deve essere uguale a %{count}"
 msgstr[1] "deve essere uguale a %{count}"
+
+#: web/controllers/user_controller.ex:49 web/controllers/user_controller.ex:70
+#: web/controllers/user_controller.ex:87
+msgid "Record not found"
+msgstr "Record non trovato"

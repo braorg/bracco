@@ -11,6 +11,7 @@ defmodule Bracco.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug Bracco.AcceptLang
   end
 
   scope "/", Bracco do

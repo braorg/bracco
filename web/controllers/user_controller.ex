@@ -1,6 +1,8 @@
 defmodule Bracco.UserController do
   use Bracco.Web, :controller
+
   import Ecto.Query
+  import Bracco.Gettext
 
   alias Bracco.User
 
@@ -44,31 +46,45 @@ defmodule Bracco.UserController do
       Ecto.NoResultsError ->
         conn
         |> put_status(404)
-        |> render(Bracco.ChangesetView, "error.json", message: "Record not found")
+        |> render(Bracco.ChangesetView, "error.json", message: dgettext("errors", "Record not found"))
     end
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Repo.get!(User, id)
-    changeset = User.changeset(user, user_params)
+    try do
+      user = Repo.get!(User, id)
+      changeset = User.changeset(user, user_params)
 
-    case Repo.update(changeset) do
-      {:ok, user} ->
-        render(conn, "show.json", user: user)
-      {:error, changeset} ->
+      case Repo.update(changeset) do
+        {:ok, user} ->
+          render(conn, "show.json", user: user)
+        {:error, changeset} ->
+          conn
+          |> put_status(:unprocessable_entity)
+          |> render(Bracco.ChangesetView, "error.json", changeset: changeset)
+      end
+    rescue
+      Ecto.NoResultsError ->
         conn
-        |> put_status(:unprocessable_entity)
-        |> render(Bracco.ChangesetView, "error.json", changeset: changeset)
+        |> put_status(404)
+        |> render(Bracco.ChangesetView, "error.json", message: dgettext("errors", "Record not found"))
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    user = Repo.get!(User, id)
+    try do
+      user = Repo.get!(User, id)
 
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    Repo.delete!(user)
+      # Here we use delete! (with a bang) because we expect
+      # it to always work (and if it does not, it will raise).
+      Repo.delete!(user)
 
-    send_resp(conn, :no_content, "")
+      send_resp(conn, :no_content, "")
+    rescue
+      Ecto.NoResultsError ->
+        conn
+        |> put_status(404)
+        |> render(Bracco.ChangesetView, "error.json", message: dgettext("errors", "Record not found"))
+    end
   end
 end
