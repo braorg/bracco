@@ -19,7 +19,7 @@ defmodule Bracco.Mixfile do
   def application do
     [mod: {Bracco, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :comeonin, :httpoison]]
+                    :phoenix_ecto, :postgrex, :faker, :comeonin, :httpoison]]
   end
 
   # Specifies which paths to compile per environment.
