@@ -16,7 +16,7 @@ defmodule Bracco.User do
   end
 
   @required_fields ~w(first_name last_name username password)
-  @optional_fields ~w(email archived)
+  @optional_fields ~w(email archived profile_id)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
