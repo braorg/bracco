@@ -14,9 +14,9 @@ require Integer
 
 File.mkdir_p!("priv/static/avatars")
 
-Mix.Task.run "ecto.drop", ~w(-r Bracco.Repo --quiet)
-Mix.Task.run "ecto.create", ~w(-r Bracco.Repo --quiet)
-Mix.Task.run "ecto.migrate", ~w(-r Bracco.Repo --quiet)
+# Mix.Task.run "ecto.drop", ~w(-r Bracco.Repo --quiet)
+# Mix.Task.run "ecto.create", ~w(-r Bracco.Repo --quiet)
+# Mix.Task.run "ecto.migrate", ~w(-r Bracco.Repo --quiet)
 
 # %Profiles{}
 alias Bracco.Profile
@@ -43,7 +43,7 @@ Bracco.Repo.insert!(
   }
 )
 
-Enum.each((1..10), fn(_) ->
+Enum.each((1..20), fn(_) ->
   user_name = Faker.Internet.user_name
   image_url =
     Faker.Avatar.image_url
