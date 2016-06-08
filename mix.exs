@@ -40,7 +40,9 @@ defmodule Bracco.Mixfile do
      {:faker, "~> 0.6.0", only: :dev},
      {:comeonin, "~> 2.4"},
      {:corsica, "~> 0.4"},
-     {:httpoison, "~> 0.8"}]
+     {:httpoison, "~> 0.8"},
+     {:scrivener, "~> 1.2.1"},
+     {:scrivener_headers, "~> 1.0.1"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.

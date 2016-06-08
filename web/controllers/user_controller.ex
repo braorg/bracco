@@ -9,17 +9,18 @@ defmodule Bracco.UserController do
   plug :scrub_params, "user" when action in [:create, :update]
 
   def index(conn, params) do
-    base_query = from u in User, select: u
-
-    query = case params do
+    page = case params do
       %{"archived" => archived} ->
-        where(base_query, [u], u.archived == ^archived)
+        User
+        |> where([u], u.archived == ^archived)
+        |> Repo.paginate(params)
       _ ->
-        base_query
+        Repo.paginate(User, params)
     end
 
-    users = Repo.all(query)
-    render(conn, "index.json", users: users)
+    conn
+    |> Scrivener.Headers.paginate(page)
+    |> render("index.json", users: page.entries)
   end
 
   def create(conn, %{"user" => user_params}) do
