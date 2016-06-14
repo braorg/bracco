@@ -18,9 +18,7 @@ defmodule Bracco.UserController do
         Repo.paginate(User, params)
     end
 
-    conn
-    |> Scrivener.Headers.paginate(page)
-    |> render("index.json", users: page.entries)
+    render(conn, "index.json", page: page)
   end
 
   def create(conn, %{"user" => user_params}) do

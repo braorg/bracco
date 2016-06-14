@@ -41,8 +41,7 @@ defmodule Bracco.Mixfile do
      {:comeonin, "~> 2.4"},
      {:corsica, "~> 0.4"},
      {:httpoison, "~> 0.8"},
-     {:scrivener, "~> 1.2.1"},
-     {:scrivener_headers, "~> 1.0.1"}]
+     {:scrivener, "~> 1.2.1"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
